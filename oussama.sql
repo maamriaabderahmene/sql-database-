@@ -152,3 +152,18 @@ CREATE TABLE Controllers (
     Notes TEXT                         -- Additional notes or instructions
 );
 
+CREATE TABLE Inspections (
+    InspectionID INT PRIMARY KEY AUTO_INCREMENT,
+    ControllerID INT,
+    TaskID INT,
+    InspectionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    InspectionStatus ENUM('Pass', 'Fail') NOT NULL,
+    Notes TEXT,                        -- Additional notes or observations from the inspection
+    ZoneID INT,                        -- Zone where the inspection was performed
+    MerchandiseID INT,                 -- Merchandise involved in the inspection
+    FOREIGN KEY (ControllerID) REFERENCES Controllers(ControllerID),
+    FOREIGN KEY (TaskID) REFERENCES DriverTasks(TaskID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
