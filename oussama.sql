@@ -255,3 +255,15 @@ CREATE TABLE ZoneMatricules (
     FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID)
 );
 
+CREATE TABLE MerchandiseDetails (
+    DetailID INT PRIMARY KEY AUTO_INCREMENT,
+    MerchandiseID INT,
+    DetailName VARCHAR(255) NOT NULL,
+    DetailValue TEXT NOT NULL,
+    DetailType ENUM('General', 'Technical', 'Logistical'), -- Type of detail (e.g., General, Technical, Logistical)
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    Notes TEXT,
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
