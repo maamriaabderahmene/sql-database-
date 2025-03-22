@@ -267,3 +267,16 @@ CREATE TABLE MerchandiseDetails (
     FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
 );
 
+CREATE TABLE StorageConditions (
+    ConditionID INT PRIMARY KEY AUTO_INCREMENT,
+    MerchandiseID INT,
+    TemperatureMin DECIMAL(5, 2),      -- Minimum temperature requirement
+    TemperatureMax DECIMAL(5, 2),      -- Maximum temperature requirement
+    HumidityMin DECIMAL(5, 2),         -- Minimum humidity requirement
+    HumidityMax DECIMAL(5, 2),         -- Maximum humidity requirement
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of when the condition was created
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of last update
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
