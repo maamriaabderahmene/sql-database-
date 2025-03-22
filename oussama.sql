@@ -45,3 +45,9 @@ CREATE TABLE Merchandise (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    -- Timestamp of merchandise creation
     FOREIGN KEY (CategoryID) REFERENCES MerchandiseCategories(CategoryID) -- Links to the MerchandiseCategories table
 );
+
+CREATE TABLE MerchandiseCategories (
+    CategoryID INT PRIMARY KEY AUTO_INCREMENT,      -- Unique identifier for each category
+    CategoryName VARCHAR(255) NOT NULL,            -- Name of the category (e.g., Electronics, Perishables)
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp of category creation
+);
