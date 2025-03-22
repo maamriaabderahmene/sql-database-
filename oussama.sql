@@ -302,3 +302,18 @@ CREATE TABLE OrderStatus (
     FOREIGN KEY (OrderID) REFERENCES ClientOrders(OrderID)
 );
 
+CREATE TABLE DestinationAddresses (
+    AddressID INT PRIMARY KEY AUTO_INCREMENT,
+    AddressLine1 VARCHAR(255) NOT NULL,
+    AddressLine2 VARCHAR(255),
+    City VARCHAR(255) NOT NULL,
+    State VARCHAR(255),
+    PostalCode VARCHAR(50),
+    Country VARCHAR(255) NOT NULL,
+    Latitude DECIMAL(9, 6),             -- Latitude for geolocation
+    Longitude DECIMAL(9, 6),            -- Longitude for geolocation
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of address creation
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of last update
+    Notes TEXT                          -- Additional notes or instructions
+);
+
