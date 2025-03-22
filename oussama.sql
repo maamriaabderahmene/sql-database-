@@ -141,3 +141,14 @@ CREATE TABLE DriverTasks (
     FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
     FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
 );
+
+CREATE TABLE Controllers (
+    ControllerID INT PRIMARY KEY AUTO_INCREMENT,
+    ControllerName VARCHAR(255) NOT NULL,
+    ContactInfo VARCHAR(255),
+    Email VARCHAR(255),                -- Controller's email for communication
+    Availability ENUM('Available', 'Busy') DEFAULT 'Available', -- Controller's availability status
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of controller creation
+    Notes TEXT                         -- Additional notes or instructions
+);
+
