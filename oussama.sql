@@ -20,3 +20,15 @@ CREATE TABLE ZoneCategories (
     FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID)  -- Establishes a relationship with the Zones table
 );
 
+CREATE TABLE ZoneConstraints (
+    ConstraintID INT PRIMARY KEY AUTO_INCREMENT,      -- Unique identifier for each constraint
+    ZoneID INT,                                      -- Foreign key referencing the Zones table
+    TemperatureMin DECIMAL(5, 2),                    -- Minimum temperature requirement for the zone (nullable)
+    TemperatureMax DECIMAL(5, 2),                    -- Maximum temperature requirement for the zone (nullable)
+    HumidityMin DECIMAL(5, 2),                       -- Minimum humidity requirement for the zone (nullable)
+    HumidityMax DECIMAL(5, 2),                       -- Maximum humidity requirement for the zone (nullable)
+    WeightCapacity DECIMAL(10, 2) NOT NULL,          -- Maximum weight capacity for the zone
+    Dimensions VARCHAR(255),                         -- Dimensions of the zone (e.g., "10x5x3" for LxWxH)
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   -- Timestamp of constraint creation
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID)    -- Establishes a relationship with the Zones table
+);
