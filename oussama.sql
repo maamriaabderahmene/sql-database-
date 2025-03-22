@@ -385,3 +385,147 @@ CREATE TABLE AccessLevels (
     Notes TEXT                          -- Additional notes or instructions
 );
 
+CREATE TABLE UserRoles (
+    RoleID INT PRIMARY KEY AUTO_INCREMENT,
+    RoleName ENUM('Administrator', 'Moderator', 'Driver', 'Controller') NOT NULL,
+    Description TEXT,                   -- Description of the role
+    IsActive BOOLEAN DEFAULT TRUE,      -- Indicates if the role is active
+    CreatedBy INT,                      -- User who created the role
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of role creation
+    UpdatedBy INT,                      -- User who last updated the role
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of last update
+    Notes TEXT                          -- Additional notes or instructions
+);
+
+CREATE TABLE Notifications (
+    NotificationID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT NOT NULL,               -- ID of the user (Moderator, Driver, or Controller)
+    UserRole ENUM('Moderator', 'Driver', 'Controller') NOT NULL, -- Role of the user
+    NotificationType ENUM('Task Assigned', 'Task Completed', 'Inspection Required', 'Order Update', 'System Alert') NOT NULL,
+    NotificationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of notification
+    IsRead BOOLEAN DEFAULT FALSE,     -- Indicates if the notification has been read
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (UserID) REFERENCES Moderators(ModeratorID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Drivers(DriverID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Controllers(ControllerID) ON DELETE CASCADE
+);
+
+CREATE TABLE TaskAssignments (
+    AssignmentID INT PRIMARY KEY AUTO_INCREMENT,
+    TaskID INT,
+    AssignedTo INT,                    -- Driver assigned to the task
+    AssignedBy INT,                    -- Moderator who assigned the task
+    AssignmentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of assignment
+    Status ENUM('Pending', 'In Progress', 'Completed', 'Cancelled') DEFAULT 'Pending', -- Status of the assignment
+    ZoneID INT,                        -- Zone involved in the task
+    MerchandiseID INT,                 -- Merchandise involved in the task
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (TaskID) REFERENCES DriverTasks(TaskID),
+    FOREIGN KEY (AssignedTo) REFERENCES Drivers(DriverID),
+    FOREIGN KEY (AssignedBy) REFERENCES Moderators(ModeratorID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
+CREATE TABLE MerchandiseInspectionLogs (
+    LogID INT PRIMARY KEY AUTO_INCREMENT,
+    InspectionID INT,
+    MerchandiseID INT,
+    LogDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of the log entry
+    LogDetails TEXT NOT NULL,                   -- Details of the inspection log
+    LogStatus ENUM('Pass', 'Fail', 'Pending') DEFAULT 'Pending', -- Status of the inspection log
+    ControllerID INT,                          -- Controller who performed the inspection
+    ZoneID INT,                                -- Zone where the inspection was performed
+    TaskID INT,                                -- Task associated with the inspection
+    Notes TEXT,                                -- Additional notes or instructions
+    FOREIGN KEY (InspectionID) REFERENCES Inspections(InspectionID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID),
+    FOREIGN KEY (ControllerID) REFERENCES Controllers(ControllerID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (TaskID) REFERENCES DriverTasks(TaskID)
+);
+
+CREATE TABLE DriverPerformanceLogs (
+    LogID INT PRIMARY KEY AUTO_INCREMENT,
+    DriverID INT,
+    MetricType ENUM('Daily', 'Monthly', 'Yearly') NOT NULL, -- Type of performance metric
+    MetricValue DECIMAL(10, 2),       -- Value of the performance metric
+    LogDate DATE,                     -- Date of the performance log
+    TaskType ENUM('Stocking', 'Destocking'), -- Type of task (stocking or destocking)
+    ZoneID INT,                       -- Zone involved in the performance metric
+    MerchandiseID INT,                -- Merchandise involved in the performance metric
+    Notes TEXT,                       -- Additional notes or instructions
+    FOREIGN KEY (DriverID) REFERENCES Drivers(DriverID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
+CREATE TABLE ControllerPerformanceLogs (
+    LogID INT PRIMARY KEY AUTO_INCREMENT,
+    ControllerID INT,
+    MetricType ENUM('Daily', 'Monthly', 'Yearly') NOT NULL, -- Type of performance metric
+    MetricValue DECIMAL(10, 2),       -- Value of the performance metric
+    LogDate DATE,                     -- Date of the performance log
+    TaskType ENUM('Stocking', 'Destocking'), -- Type of task (stocking or destocking)
+    ZoneID INT,                       -- Zone involved in the performance metric
+    MerchandiseID INT,                -- Merchandise involved in the performance metric
+    Notes TEXT,                       -- Additional notes or instructions
+    FOREIGN KEY (ControllerID) REFERENCES Controllers(ControllerID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
+CREATE TABLE ModeratorPerformanceLogs (
+    LogID INT PRIMARY KEY AUTO_INCREMENT,
+    ModeratorID INT,
+    MetricType ENUM('Daily', 'Monthly', 'Yearly') NOT NULL, -- Type of performance metric
+    MetricValue DECIMAL(10, 2),       -- Value of the performance metric
+    LogDate DATE,                     -- Date of the performance log
+    TaskType ENUM('Stocking', 'Destocking'), -- Type of task (stocking or destocking)
+    ZoneID INT,                       -- Zone involved in the performance metric
+    MerchandiseID INT,                -- Merchandise involved in the performance metric
+    Notes TEXT,                       -- Additional notes or instructions
+    FOREIGN KEY (ModeratorID) REFERENCES Moderators(ModeratorID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
+CREATE TABLE ZoneSaturationLevels (
+    SaturationID INT PRIMARY KEY AUTO_INCREMENT,
+    ZoneID INT,
+    SaturationLevel DECIMAL(5, 2),    -- Saturation level of the zone (e.g., 75.50%)
+    SaturationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of saturation level recording
+    MerchandiseID INT,                -- Merchandise contributing to the saturation level
+    Notes TEXT,                       -- Additional notes or instructions
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
+CREATE TABLE HistoricalData (
+    HistoricalID INT PRIMARY KEY AUTO_INCREMENT,
+    DataType ENUM('Orders', 'Tasks', 'Inspections', 'Performance', 'Saturation', 'Feedback') NOT NULL, -- Type of historical data
+    DataID INT,                        -- ID of the data record (e.g., OrderID, TaskID, InspectionID)
+    DataDetails TEXT NOT NULL,          -- Details of the historical data
+    RecordedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of data recording
+    UserID INT,                         -- User associated with the historical data (e.g., Moderator, Driver, Controller)
+    UserRole ENUM('Moderator', 'Driver', 'Controller'), -- Role of the user
+    ZoneID INT,                         -- Zone associated with the historical data
+    MerchandiseID INT,                  -- Merchandise associated with the historical data
+    Notes TEXT,                         -- Additional notes or instructions
+    FOREIGN KEY (UserID) REFERENCES Moderators(ModeratorID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Drivers(DriverID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Controllers(ControllerID) ON DELETE CASCADE,
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
+CREATE TABLE SupplementaryInformation (
+    SupplementaryID INT PRIMARY KEY AUTO_INCREMENT,
+    MerchandiseID INT,
+    InfoType VARCHAR(255) NOT NULL,    -- Type of supplementary information (e.g., Manufacturer, Warranty)
+    InfoValue TEXT NOT NULL,           -- Value of the supplementary information
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of information creation
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of last update
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
