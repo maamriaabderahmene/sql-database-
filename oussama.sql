@@ -92,3 +92,23 @@ CREATE TABLE StockingOrders (
     FOREIGN KEY (AssignedDriverID) REFERENCES Drivers(DriverID),
     FOREIGN KEY (AssignedControllerID) REFERENCES Controllers(ControllerID)
 );
+
+CREATE TABLE DestockingOrders (
+    DestockingOrderID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT,
+    MerchandiseID INT,
+    DestinationAddressID INT,
+    BuyerInfoID INT,
+    Quantity INT,                      -- Quantity of merchandise to destock
+    DestockingDate TIMESTAMP,         -- Date when destocking operation is performed
+    AssignedDriverID INT,             -- Driver assigned for destocking
+    AssignedControllerID INT,         -- Controller assigned for inspection
+    Status ENUM('Not Distributed', 'In Transit', 'Delivered') DEFAULT 'Not Distributed',
+    Notes TEXT,                       -- Additional notes or instructions
+    FOREIGN KEY (OrderID) REFERENCES ClientOrders(OrderID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID),
+    FOREIGN KEY (DestinationAddressID) REFERENCES DestinationAddresses(AddressID),
+    FOREIGN KEY (BuyerInfoID) REFERENCES BuyerInformation(BuyerID),
+    FOREIGN KEY (AssignedDriverID) REFERENCES Drivers(DriverID),
+    FOREIGN KEY (AssignedControllerID) REFERENCES Controllers(ControllerID)
+);
