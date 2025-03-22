@@ -167,3 +167,16 @@ CREATE TABLE Inspections (
     FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
 );
 
+CREATE TABLE Moderators (
+    ModeratorID INT PRIMARY KEY AUTO_INCREMENT,
+    ModeratorName VARCHAR(255) NOT NULL,
+    ContactInfo VARCHAR(255),
+    Email VARCHAR(255),                -- Moderator's email for communication
+    DateOfBirth DATE,                  -- Moderator's date of birth
+    RecruitmentDate DATE,              -- Date when the moderator was recruited
+    Role ENUM('Admin', 'Moderator') DEFAULT 'Moderator', -- Role of the moderator
+    Availability ENUM('Available', 'Busy') DEFAULT 'Available', -- Moderator's availability status
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of moderator creation
+    Notes TEXT                         -- Additional notes or instructions
+);
+
