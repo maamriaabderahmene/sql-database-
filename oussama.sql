@@ -74,3 +74,21 @@ CREATE TABLE ClientOrders (
     Notes TEXT,                      -- Additional notes or instructions
     FOREIGN KEY (ClientID) REFERENCES Clients(ClientID)
 );
+
+CREATE TABLE StockingOrders (
+    StockingOrderID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT,
+    MerchandiseID INT,
+    ZoneID INT,
+    Quantity INT,
+    StockDate TIMESTAMP,
+    AssignedDriverID INT,              -- Driver assigned for stocking
+    AssignedControllerID INT,          -- Controller assigned for inspection
+    Status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (OrderID) REFERENCES ClientOrders(OrderID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (AssignedDriverID) REFERENCES Drivers(DriverID),
+    FOREIGN KEY (AssignedControllerID) REFERENCES Controllers(ControllerID)
+);
