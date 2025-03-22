@@ -228,3 +228,19 @@ CREATE TABLE PerformanceHistory (
     FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
 );
 
+CREATE TABLE ClarkCodes (
+    ClarkCodeID INT PRIMARY KEY AUTO_INCREMENT,
+    TaskID INT,
+    ClarkCode VARCHAR(255) UNIQUE NOT NULL, -- Unique Clark Code for the task
+    Status ENUM('Active', 'Inactive') DEFAULT 'Active', -- Status of the Clark Code
+    DriverID INT,                        -- Driver assigned to the task
+    ZoneID INT,                          -- Zone involved in the task
+    MerchandiseID INT,                   -- Merchandise involved in the task
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of when the Clark Code was created
+    Notes TEXT,                          -- Additional notes or instructions
+    FOREIGN KEY (TaskID) REFERENCES DriverTasks(TaskID),
+    FOREIGN KEY (DriverID) REFERENCES Drivers(DriverID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
