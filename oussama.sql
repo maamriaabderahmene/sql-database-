@@ -291,3 +291,14 @@ CREATE TABLE TaskStatus (
     FOREIGN KEY (TaskID) REFERENCES DriverTasks(TaskID)
 ); 
 
+CREATE TABLE OrderStatus (
+    OrderStatusID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT,
+    Status ENUM('Pending', 'Validated', 'Completed', 'Cancelled') NOT NULL,
+    StatusDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedBy INT,                     -- User who updated the status (Moderator, Driver, or Controller)
+    UserRole ENUM('Moderator', 'Driver', 'Controller'), -- Role of the user who updated the status
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (OrderID) REFERENCES ClientOrders(OrderID)
+);
+
