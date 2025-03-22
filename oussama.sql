@@ -244,3 +244,14 @@ CREATE TABLE ClarkCodes (
     FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
 );
 
+CREATE TABLE ZoneMatricules (
+    MatriculeID INT PRIMARY KEY AUTO_INCREMENT,
+    ZoneID INT,
+    Matricule VARCHAR(255) UNIQUE NOT NULL, -- Unique matricule for the zone
+    Status ENUM('Active', 'Inactive') DEFAULT 'Active', -- Status of the matricule
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of when the matricule was created
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of last update
+    Notes TEXT,                          -- Additional notes or instructions
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID)
+);
+
