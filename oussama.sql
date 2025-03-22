@@ -32,3 +32,16 @@ CREATE TABLE ZoneConstraints (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   -- Timestamp of constraint creation
     FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID)    -- Establishes a relationship with the Zones table
 );
+
+CREATE TABLE Merchandise (
+    MerchandiseID INT PRIMARY KEY AUTO_INCREMENT,      -- Unique identifier for each merchandise item
+    MerchandiseName VARCHAR(255) NOT NULL,            -- Name of the merchandise (e.g., Laptop, Frozen Food)
+    CategoryID INT,                                   -- Foreign key referencing the MerchandiseCategories table
+    Quantity INT NOT NULL,                            -- Quantity of the merchandise in stock
+    Weight DECIMAL(10, 2) NOT NULL,                   -- Weight of the merchandise (in kg or lbs)
+    Dimensions VARCHAR(255),                          -- Dimensions of the merchandise (e.g., "0.5x0.3x0.2" for LxWxH)
+    StorageTemperature DECIMAL(5, 2),                 -- Required storage temperature for the merchandise (nullable)
+    StorageHumidity DECIMAL(5, 2),                    -- Required storage humidity for the merchandise (nullable)
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    -- Timestamp of merchandise creation
+    FOREIGN KEY (CategoryID) REFERENCES MerchandiseCategories(CategoryID) -- Links to the MerchandiseCategories table
+);
