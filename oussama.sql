@@ -317,3 +317,21 @@ CREATE TABLE DestinationAddresses (
     Notes TEXT                          -- Additional notes or instructions
 );
 
+CREATE TABLE RealTimeUpdates (
+    UpdateID INT PRIMARY KEY AUTO_INCREMENT,
+    TaskID INT,
+    UpdateType ENUM('Stocking', 'Destocking') NOT NULL,
+    UpdateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdateStatus ENUM('Pending', 'In Progress', 'Completed', 'Cancelled') NOT NULL,
+    ZoneID INT,                         -- Zone involved in the update
+    MerchandiseID INT,                  -- Merchandise involved in the update
+    DriverID INT,                       -- Driver involved in the update
+    ControllerID INT,                   -- Controller involved in the update
+    Notes TEXT,                         -- Additional notes or instructions
+    FOREIGN KEY (TaskID) REFERENCES DriverTasks(TaskID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID),
+    FOREIGN KEY (DriverID) REFERENCES Drivers(DriverID),
+    FOREIGN KEY (ControllerID) REFERENCES Controllers(ControllerID)
+);
+
