@@ -112,3 +112,16 @@ CREATE TABLE DestockingOrders (
     FOREIGN KEY (AssignedDriverID) REFERENCES Drivers(DriverID),
     FOREIGN KEY (AssignedControllerID) REFERENCES Controllers(ControllerID)
 );
+
+CREATE TABLE Drivers (
+    DriverID INT PRIMARY KEY AUTO_INCREMENT,
+    DriverName VARCHAR(255) NOT NULL,
+    ContactInfo VARCHAR(255),
+    Email VARCHAR(255),                -- Driver's email for communication
+    LicenseNumber VARCHAR(50),         -- Driver's license number
+    VehicleInfo VARCHAR(255),         -- Information about the driver's vehicle
+    Availability ENUM('Available', 'Busy') DEFAULT 'Available',
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of driver creation
+    Notes TEXT                         -- Additional notes or instructions
+);
+
