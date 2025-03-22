@@ -196,3 +196,19 @@ CREATE TABLE ModeratorAssignments (
     FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
 );
 
+CREATE TABLE PerformanceMetrics (
+    MetricID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT NOT NULL,               -- ID of the user (Moderator, Driver, or Controller)
+    UserRole ENUM('Moderator', 'Driver', 'Controller') NOT NULL, -- Role of the user
+    MetricType ENUM('Daily', 'Monthly', 'Yearly') NOT NULL, -- Type of metric (daily, monthly, yearly)
+    MetricValue DECIMAL(10, 2),       -- Value of the performance metric
+    MetricDate DATE,                  -- Date of the performance metric
+    TaskType ENUM('Stocking', 'Destocking'), -- Type of task (stocking or destocking)
+    ZoneID INT,                       -- Zone involved in the performance metric
+    MerchandiseID INT,                -- Merchandise involved in the performance metric
+    Notes TEXT,                       -- Additional notes or comments
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of when the metric was recorded
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
