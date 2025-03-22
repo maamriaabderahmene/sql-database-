@@ -51,3 +51,13 @@ CREATE TABLE MerchandiseCategories (
     CategoryName VARCHAR(255) NOT NULL,            -- Name of the category (e.g., Electronics, Perishables)
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp of category creation
 );
+
+CREATE TABLE Clients (
+    ClientID INT PRIMARY KEY AUTO_INCREMENT,
+    ClientName VARCHAR(255) NOT NULL,
+    ClientType ENUM('Company', 'Individual') NOT NULL,
+    ContactInfo VARCHAR(255),
+    Email VARCHAR(255),
+    Address VARCHAR(255),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
