@@ -125,3 +125,19 @@ CREATE TABLE Drivers (
     Notes TEXT                         -- Additional notes or instructions
 );
 
+CREATE TABLE DriverTasks (
+    TaskID INT PRIMARY KEY AUTO_INCREMENT,
+    DriverID INT,
+    OrderID INT,
+    TaskType ENUM('Stocking', 'Destocking') NOT NULL,
+    TaskStatus ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
+    StartTime TIMESTAMP,               -- Time when the task is started
+    EndTime TIMESTAMP,                 -- Time when the task is completed
+    ZoneID INT,                        -- Zone where the task is performed
+    MerchandiseID INT,                 -- Merchandise involved in the task
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (DriverID) REFERENCES Drivers(DriverID),
+    FOREIGN KEY (OrderID) REFERENCES ClientOrders(OrderID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
