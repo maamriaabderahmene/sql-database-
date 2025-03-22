@@ -347,3 +347,17 @@ CREATE TABLE Reports (
     FOREIGN KEY (GeneratedBy) REFERENCES Moderators(ModeratorID)
 );
 
+CREATE TABLE Feedback (
+    FeedbackID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT NOT NULL,               -- ID of the user (Moderator, Driver, or Controller)
+    UserRole ENUM('Moderator', 'Driver', 'Controller') NOT NULL, -- Role of the user
+    FeedbackType ENUM('Suggestion', 'Complaint', 'General'), -- Type of feedback (e.g., Suggestion, Complaint, General)
+    FeedbackText TEXT NOT NULL,        -- Feedback provided by the user
+    FeedbackDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of feedback submission
+    Status ENUM('Open', 'In Progress', 'Resolved') DEFAULT 'Open', -- Status of the feedback
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (UserID) REFERENCES Moderators(ModeratorID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Drivers(DriverID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Controllers(ControllerID) ON DELETE CASCADE
+);
+
