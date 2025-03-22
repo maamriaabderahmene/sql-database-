@@ -335,3 +335,15 @@ CREATE TABLE RealTimeUpdates (
     FOREIGN KEY (ControllerID) REFERENCES Controllers(ControllerID)
 );
 
+CREATE TABLE Reports (
+    ReportID INT PRIMARY KEY AUTO_INCREMENT,
+    ReportType ENUM('Performance', 'Inventory', 'Order', 'ZoneSaturation', 'DriverActivity', 'ControllerInspections') NOT NULL,
+    GeneratedBy INT,                     -- User who generated the report (Moderator, Admin, etc.)
+    UserRole ENUM('Moderator', 'Admin'), -- Role of the user who generated the report
+    GeneratedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of report generation
+    ReportPeriod ENUM('Daily', 'Weekly', 'Monthly', 'Yearly'), -- Period covered by the report
+    ReportData TEXT,                     -- Data or content of the report
+    Notes TEXT,                          -- Additional notes or instructions
+    FOREIGN KEY (GeneratedBy) REFERENCES Moderators(ModeratorID)
+);
+
