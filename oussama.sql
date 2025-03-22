@@ -13,4 +13,10 @@ CREATE TABLE Zones (
     Height DECIMAL(10, 2) NOT NULL,                -- Height of the zone (in meters or feet)
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp of zone creation
 );
+CREATE TABLE ZoneCategories (
+    CategoryID INT PRIMARY KEY AUTO_INCREMENT,      -- Unique identifier for each category
+    CategoryName VARCHAR(255) NOT NULL,            -- Name of the category (e.g., Electronics, Perishables)
+    ZoneID INT,                                    -- Foreign key referencing the Zones table
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID)  -- Establishes a relationship with the Zones table
+);
 
