@@ -61,3 +61,16 @@ CREATE TABLE Clients (
     Address VARCHAR(255),
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE ClientOrders (
+    OrderID INT PRIMARY KEY AUTO_INCREMENT,
+    ClientID INT,
+    OrderType ENUM('Stocking', 'Destocking') NOT NULL,
+    OrderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Status ENUM('Pending', 'Validated', 'Completed') DEFAULT 'Pending',
+    DestinationAddress VARCHAR(255), -- For destocking orders
+    BuyerInfo VARCHAR(255),          -- For destocking orders
+    LimitDate DATE,                  -- Deadline for destocking orders
+    Notes TEXT,                      -- Additional notes or instructions
+    FOREIGN KEY (ClientID) REFERENCES Clients(ClientID)
+);
