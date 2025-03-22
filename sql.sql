@@ -403,17 +403,3 @@ CREATE TABLE Permissions (
     UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of last update
     Notes TEXT                          -- Additional notes or instructions
 );
-
-CREATE TABLE AccessLevels (
-    AccessLevelID INT PRIMARY KEY AUTO_INCREMENT,
-    UserRole ENUM('Administrator', 'Moderator', 'Driver', 'Controller') NOT NULL,
-    AccessType ENUM('Read', 'Write', 'Read/Write') NOT NULL,
-    ResourceType ENUM('Orders', 'Zones', 'Merchandise', 'Reports', 'Tasks', 'Inspections', 'Feedback', 'Clients', 'Drivers', 'Controllers', 'Moderators') NOT NULL,
-    IsActive BOOLEAN DEFAULT TRUE,      -- Indicates if the access level is active
-    CreatedBy INT,                      -- User who created the access level
-    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of access level creation
-    UpdatedBy INT,                      -- User who last updated the access level
-    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of last update
-    Notes TEXT                          -- Additional notes or instructions
-);
-
