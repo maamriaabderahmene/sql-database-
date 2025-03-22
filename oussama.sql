@@ -180,3 +180,19 @@ CREATE TABLE Moderators (
     Notes TEXT                         -- Additional notes or instructions
 );
 
+CREATE TABLE ModeratorAssignments (
+    AssignmentID INT PRIMARY KEY AUTO_INCREMENT,
+    ModeratorID INT,
+    OrderID INT,
+    AssignmentDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending', -- Status of the assignment
+    TaskType ENUM('Stocking', 'Destocking'), -- Type of task (stocking or destocking)
+    ZoneID INT,                        -- Zone involved in the assignment
+    MerchandiseID INT,                 -- Merchandise involved in the assignment
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (ModeratorID) REFERENCES Moderators(ModeratorID),
+    FOREIGN KEY (OrderID) REFERENCES ClientOrders(OrderID),
+    FOREIGN KEY (ZoneID) REFERENCES Zones(ZoneID),
+    FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
+);
+
