@@ -392,3 +392,15 @@ CREATE TABLE SupplementaryInformation (
     InfoValue TEXT,
     FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
 );
+
+CREATE TABLE Permissions (
+    PermissionID INT PRIMARY KEY AUTO_INCREMENT,
+    UserRole ENUM('Administrator', 'Moderator', 'Driver', 'Controller') NOT NULL,
+    PermissionType ENUM('Read', 'Write', 'Read/Write') NOT NULL,
+    ResourceType ENUM('Orders', 'Zones', 'Merchandise', 'Reports', 'Tasks', 'Inspections', 'Feedback', 'Clients', 'Drivers', 'Controllers', 'Moderators') NOT NULL,
+    IsActive BOOLEAN DEFAULT TRUE,      -- Indicates if the permission is active
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of permission creation
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Timestamp of last update
+    Notes TEXT                          -- Additional notes or instructions
+);
+
