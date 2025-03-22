@@ -280,3 +280,14 @@ CREATE TABLE StorageConditions (
     FOREIGN KEY (MerchandiseID) REFERENCES Merchandise(MerchandiseID)
 );
 
+CREATE TABLE TaskStatus (
+    StatusID INT PRIMARY KEY AUTO_INCREMENT,
+    TaskID INT,
+    Status ENUM('Pending', 'In Progress', 'Completed', 'Cancelled') NOT NULL,
+    StatusDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedBy INT,                     -- User who updated the status (Moderator, Driver, or Controller)
+    UserRole ENUM('Moderator', 'Driver', 'Controller'), -- Role of the user who updated the status
+    Notes TEXT,                        -- Additional notes or instructions
+    FOREIGN KEY (TaskID) REFERENCES DriverTasks(TaskID)
+); 
+
